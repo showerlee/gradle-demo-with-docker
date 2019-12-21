@@ -1,0 +1,14 @@
+#!/bin/bash -ev
+
+export WORKING_DIR="/app"
+export APP_NAME="gradle-demo-with-docker"
+export PACKAGE_NAME="showerlee/gradle-demo-with-docker"
+export REPOSITORY="nexus.example.com"
+export REPO_PORT="8082"
+export DOCKER_IMAGE="${REPOSITORY}:${REPO_PORT}/${PACKAGE_NAME}"
+export APP_PORT="8080"
+
+display_status() {
+    echo ">>> $1 <<<" 1>&2
+}
+

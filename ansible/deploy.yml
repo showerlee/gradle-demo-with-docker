@@ -1,0 +1,4 @@
+- hosts: "{{project}}"
+  gather_facts: true
+  roles:
+    - deploy

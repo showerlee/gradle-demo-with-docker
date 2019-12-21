@@ -1,0 +1,12 @@
+#! /bin/bash -e
+
+cd $(dirname $0)/..
+source ./auto/set-env-vars
+
+export VERSION=dev
+auto/build $VERSION
+docker-compose up -d dev
+
+sleep 5
+
+open http://localhost:${APP_PORT}/${APP_NAME}/

@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+  dev:
+    image: ${DOCKER_IMAGE}:${VERSION}
+    build: .
+    volumes:
+      - .:/app:rw
+      - gradle-cache:/home/gradle/.gradle
+    ports: 
+      - ${APP_PORT}:${APP_PORT}
+
+volumes:
+  gradle-cache:
+    external: true

@@ -1,0 +1,19 @@
+- name: Install docker
+  yum: pkg=docker state=latest  
+
+- name: startup docker
+  service: name=docker state=restarted
+
+- name: "spinup {{project}} container"
+  when: project == "Java-war-dev"
+
+- name: pause 5 seconds
+  pause: seconds=5
+
+- name: Run tomcat health check locally
+  shell: "sh roles/deploy/files/health_check.sh {{ site_url }} {{ port }} {{ project }}"
+  delegate_to: localhost
+  register: health_status
+
+- debug: msg="{{ health_status.stdout }}"
+

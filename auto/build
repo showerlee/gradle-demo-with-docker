@@ -1,0 +1,15 @@
+#! /bin/bash -e
+
+cd $(dirname $0)/..
+source ./auto/set-env-vars
+
+VERSION=${1:-'dev'}
+
+docker-compose down --remove-orphans
+
+if [ $(docker images | grep ${DOCKER_IMAGE} | wc -l) -ge 1 ]; then
+    docker rmi ${DOCKER_IMAGE}:${VERSION}
+fi
+
+docker volume create --name gradle-cache > /dev/null
+docker-compose build

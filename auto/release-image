@@ -1,0 +1,19 @@
+#! /bin/bash -e
+
+cd $(dirname $0)/..
+source ./auto/set-env-vars
+
+VERSION=dev-$(date +'%Y%m%d%H%M')
+auto/build $VERSION
+
+# Release to new registry
+docker push ${DOCKER_IMAGE}:${VERSION}
+docker tag ${DOCKER_IMAGE}:${VERSION} ${DOCKER_IMAGE}:latest
+docker push ${DOCKER_IMAGE}:latest
+
+# Save image reference
+mkdir -pv artifacts
+DIGEST=$(docker pull ${DOCKER_IMAGE}:${VERSION} | sed -n 's/^Digest: // p')
+IMAGE="${DOCKER_IMAGE}:${VERSION}@${DIGEST}"
+echo "$IMAGE" > artifacts/docker-image-released.txt
+echo "Released as: $IMAGE"
