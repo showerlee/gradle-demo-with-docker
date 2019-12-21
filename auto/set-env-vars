@@ -1,4 +1,4 @@
-#!/bin/bash -ev
+#!/bin/bash -e
 
 export WORKING_DIR="/app"
 export APP_NAME="gradle-demo-with-docker"

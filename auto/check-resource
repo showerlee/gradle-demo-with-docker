@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+USER=$1
+ENV=$2
+PORT=$3
+
+DOMAIN="www.${ENV}.example.com"
+
+echo "[INFO] Checking Disk space:"
+ssh -p ${PORT} ${USER}@${DOMAIN} df -h
+echo ""
+echo "[INFO] Checking RAM space:"
+ssh -p ${PORT} ${USER}@${DOMAIN} free -m

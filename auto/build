@@ -8,7 +8,7 @@ VERSION=${1:-'dev'}
 docker-compose down --remove-orphans
 
 if [ $(docker images | grep ${DOCKER_IMAGE} | wc -l) -ge 1 ]; then
-    docker rmi ${DOCKER_IMAGE}:${VERSION}
+    docker rmi $(docker images | grep ${DOCKER_IMAGE} | awk -F' ' '{print $3}') -f
 fi
 
 docker volume create --name gradle-cache > /dev/null

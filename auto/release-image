@@ -3,7 +3,7 @@
 cd $(dirname $0)/..
 source ./auto/set-env-vars
 
-VERSION=dev-$(date +'%Y%m%d%H%M')
+export VERSION=dev-$(date +'%Y%m%d%H%M')
 auto/build $VERSION
 
 # Release to new registry
