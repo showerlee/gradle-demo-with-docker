@@ -20,7 +20,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -111,3 +112,9 @@ docs/_build/
 # PyBuilder
 target/
 
+# Gradle
+.gradle/
+build/
+.project
+.settings
+.DS_Store
