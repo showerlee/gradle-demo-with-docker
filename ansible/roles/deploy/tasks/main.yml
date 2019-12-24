@@ -10,12 +10,12 @@
 - name: Install python docker api
   shell: "pip install docker"
 
-- name: Stop a container
+- name: Stop container of last version
   docker_container:
     name: "{{ project }}"
     state: stopped
 
-- name: Remove APP image
+- name: Remove docker image of last version
   shell: "docker rmi $(docker images | grep {{ project }} | awk '{print $3}')"
 
 - name: Log into DockerHub
@@ -25,7 +25,7 @@
     password: "{{ nexus_pass }}"
     reauthorize: yes
 
-- name: "Spinup {{project}} docker container"
+- name: "Spinup {{project}} docker container with current version"
   docker_container:
     name: "{{ project }}"
     image: "{{ app_image }}"
