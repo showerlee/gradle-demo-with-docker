@@ -6,7 +6,7 @@ pipeline {
     options { timestamps () }
     
     environment {
-        PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/data/apache-maven-3.6.0/bin"
+        PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
         PROJECT_NAME="gradle-demo-with-docker"
         GITHUB_CREDENTIAL_ID="Github-credential"
         NEXUS_URL="nexus.example.com:8082"
