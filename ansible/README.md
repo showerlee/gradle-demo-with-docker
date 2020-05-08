@@ -9,7 +9,7 @@ Simple Ansible playbooks integrated with Jenkins, Github, Docker for CI/CD deplo
 - Build image with ansible:${VERSION-2.9}
 
 ```shell
-VERSION=2.9 docker build --build-arg VERSION=${VERSION} -t nexus.example.com:8082/showerlee/ansible:${VERSION} .
+export VERSION=2.9 && docker build --build-arg VERSION=${VERSION} -t nexus.example.com:8082/showerlee/ansible:${VERSION} .
 ```
 
 - Run the container to test ansible version
