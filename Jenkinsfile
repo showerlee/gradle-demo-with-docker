@@ -25,15 +25,6 @@ pipeline {
     }
     
     stages {
-        stage("Checkout code from github"){
-            steps{
-                echo "[INFO] Checkout code from github."
-                dir ("${env.WORKSPACE}/gradle-demo-with-docker") {
-                    git branch: "${env.BRANCH}", credentialsId: "${env.GITHUB_CREDENTIAL_ID}", url: "https://github.com/showerlee/gradle-demo-with-docker.git"
-                }
-            }
-        }
-
         stage("Build and Release Image"){
             steps{
                 withCredentials([usernamePassword(credentialsId: "${env.NEXUS_CREDENTIAL_ID}", usernameVariable: 'Nexus_USERNAME', passwordVariable: 'Nexus_PASSWORD')]) {
