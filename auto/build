@@ -7,6 +7,10 @@ VERSION=${1:-'dev'}
 
 docker-compose down --remove-orphans
 
+if [ $(docker ps -a | grep ${APP_NAME} | awk '{print $1}') -ge 1 ]; then
+    docker stop $(docker ps -a | grep ${APP_NAME} | awk '{print $1}')
+fi
+
 if [ $(docker images | grep ${DOCKER_IMAGE} | wc -l) -ge 1 ]; then
     docker rmi $(docker images | grep ${DOCKER_IMAGE} | awk -F' ' '{print $3}') -f
 fi
