@@ -31,13 +31,15 @@ pipeline {
             }
         }
 
-        stage("Env prerequsite in test env"){
+        stage("Initialize test env"){
             environment {
                 DEPLOY_ENV="test"
             }
             steps{
-                echo "[INFO] Checking deployment env"
+                echo "[INFO] Initialize test env"
                 sh """
+                echo "Clean up docker resources"
+                ./auto/clean-resource
                 echo "[INFO] Checking SSH connection:"
                 ./auto/test-ssh-connection ${env.SSH_USER} ${env.DEPLOY_ENV} ${env.SSH_PORT}
                 echo "[INFO] Checking Disk space:"
@@ -72,13 +74,15 @@ pipeline {
             }
         }
 
-        stage("Env prerequsite in prod env"){
+        stage("Initialize prod env"){
             environment {
                 DEPLOY_ENV="prod"
             }
             steps{
-                echo "[INFO] Checking deployment env"
+                echo "[INFO] Initialize prod env"
                 sh """
+                echo "Clean up docker resources in build agent"
+                ./auto/clean-resource
                 echo "[INFO] Checking SSH connection:"
                 ./auto/test-ssh-connection ${env.SSH_USER} ${env.DEPLOY_ENV} ${env.SSH_PORT}
                 echo "[INFO] Checking Disk space:"

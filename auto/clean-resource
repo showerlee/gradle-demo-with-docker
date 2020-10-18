@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+cd $(dirname $0)/..
+source ./auto/set-env-vars
+
+if [[ ! -z $(docker images | grep ${APP_NAME}) ]]; then
+    docker rmi $(docker images | grep ${APP_NAME} | awk '{print $3}') -f
+fi
+
+if [[ ! -z $(docker images | grep '<none>') ]]; then
+    docker rmi $(docker images | grep '<none>' | awk '{print $3}') -f
+fi

@@ -10,28 +10,6 @@
 - name: Install python docker api
   shell: "pip install docker"
 
-- name: Check if local service image exists
-  shell: "docker images | grep {{ project }}"
-  delegate_to: localhost
-  register: image_status
-  ignore_errors: true
-
-- name: Remove all local service images
-  shell: "docker rmi $(docker images | grep {{ project }} | awk '{print $3}') -f"
-  delegate_to: localhost
-  when: image_status.stdout != ""
-
-- name: "Check if local <none> label images exist"
-  shell: "docker images | grep '<none>'"
-  delegate_to: localhost
-  register: none_status
-  ignore_errors: true
-
-- name: "Remove local <none> label images in local"
-  shell: "docker rmi $(docker images | grep '<none>' | awk '{print $3}') -f"
-  delegate_to: localhost
-  when: none_status.stdout != ""
-
 - name: Check if remote service is running
   shell: "docker ps | grep {{ project }}"
   register: service_status
