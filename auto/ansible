@@ -1,12 +1,11 @@
 #!/bin/bash -e
 
 cd $(dirname $0)/..
-
-IMAGE="nexus.example.com:8082/showerlee/ansible:2.9"
+source ./auto/set-env-vars
 
 exec docker run -i \
     --volume ${PWD}/ansible:/cwd \
     --volume /etc/hosts:/etc/hosts \
     --volume ~/.ssh:/root/.ssh \
     --workdir /cwd \
-    "${IMAGE}" "$@"
+    "${ANSIBLE_DOCKER_IMAGE}:${ANSIBLE_VERSION}" "$@"

@@ -10,6 +10,15 @@ services:
     ports: 
       - ${APP_PORT}:${APP_PORT}
 
+  ansible:
+    image: ${ANSIBLE_DOCKER_IMAGE}:${ANSIBLE_VERSION}
+    build:
+      context: ./ansible
+      cache_from:
+        - ${ANSIBLE_DOCKER_IMAGE}:latest
+      args:
+        VERSION: ${ANSIBLE_VERSION}
+
 volumes:
   gradle-cache:
     external: true

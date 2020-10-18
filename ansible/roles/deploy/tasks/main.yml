@@ -47,8 +47,7 @@
   pause: seconds=10
 
 - name: Run tomcat health check locally
-  shell: "./roles/deploy/files/health-check.sh {{ host }} {{ port }} {{ project }}"
-  delegate_to: localhost
+  script: "./roles/deploy/files/health-check.sh {{ host }} {{ port }} {{ project }}"
   register: health_status
 
 - debug: msg="{{ health_status.stdout }}"
