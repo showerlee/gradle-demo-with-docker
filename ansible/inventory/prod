@@ -2,5 +2,5 @@
 www.prod.example.com ansible_user=root
 
 [gradle-demo-with-docker:vars]
-site_url=http://www.prod.example.com
+host=www.prod.example.com
 port=8083

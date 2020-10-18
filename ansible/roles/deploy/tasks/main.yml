@@ -56,7 +56,7 @@
   pause: seconds=10
 
 - name: Run tomcat health check locally
-  shell: "sh roles/deploy/files/health-check.sh {{ site_url }} {{ port }} {{ project }}"
+  shell: "sh roles/deploy/files/health-check.sh {{ host }} {{ port }} {{ project }}"
   delegate_to: localhost
   register: health_status
 
