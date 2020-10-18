@@ -11,17 +11,9 @@ pipeline {
         GITHUB_CREDENTIAL_ID="Github-credential"
         NEXUS_URL="nexus.example.com:8082"
         NEXUS_CREDENTIAL_ID="Nexus-credential"
-    }
-    
-    parameters {
-        choice(
-            choices: 'dev\nprod',
-            description: 'choose deploy environment',
-            name: 'DEPLOY_ENV')
-        string(
-            defaultValue: "master", 
-            description: 'Choose the branch of repository for gradle-demo-with-docker', 
-            name: 'BRANCH')
+        SSH_USER="root"
+        SSH_PORT="22"
+        APP_PORT="8083"
     }
     
     stages {
@@ -39,10 +31,9 @@ pipeline {
             }
         }
 
-        stage("Env prerequsite"){
+        stage("Env prerequsite in test env"){
             environment {
-                SSH_USER="root"
-                SSH_PORT="22"
+                DEPLOY_ENV="test"
             }
             steps{
                 echo "[INFO] Checking deployment env"
@@ -53,28 +44,71 @@ pipeline {
                 ./auto/check-resource ${env.SSH_USER} ${env.DEPLOY_ENV} ${env.SSH_PORT}
                 """
                 echo "[INFO] Env is ready to go..."
-                input("Start deploying to ${DEPLOY_ENV}?")
             }
         }
 
-        stage("Ansible Deployment"){
+        stage("Deploy test env via ansible"){
+            environment {
+                DEPLOY_ENV="test"
+            }
             steps{
                 echo "[INFO] Start deploying war to the destination server"
                 withCredentials([usernamePassword(credentialsId: "${env.NEXUS_CREDENTIAL_ID}", usernameVariable: 'Nexus_USERNAME', passwordVariable: 'Nexus_PASSWORD')]) {
                     sh "auto/ansible-playbook ${env.PROJECT_NAME} ${env.DEPLOY_ENV} ${env.Nexus_USERNAME} ${env.Nexus_PASSWORD} ${env.NEXUS_URL}"
                 }
-                echo "[INFO] Congratulation, Anisble Deployment has been finished successfully :)"
+                echo "[INFO] Deployment is complete in ${env.DEPLOY_ENV} :)"
             }
         }
 
-        stage("Health Check"){
+        stage("Health Check in test env"){
             environment {
-                APP_PORT="8083"
+                DEPLOY_ENV="test"
             }
             steps{
                 echo "[INFO] Health check for destination server"
                 sh "./auto/health-check ${env.DEPLOY_ENV} ${env.APP_PORT} ${env.PROJECT_NAME}"
-                echo "[INFO] Congratulation, Health check is accomplished, please enjoy yourself... :)"
+                echo "[INFO] Health check is complete, deployment is accomplished in ${env.DEPLOY_ENV} :)"
+                input("Start to deploy in prod?")
+            }
+        }
+
+        stage("Env prerequsite in prod env"){
+            environment {
+                DEPLOY_ENV="prod"
+            }
+            steps{
+                echo "[INFO] Checking deployment env"
+                sh """
+                echo "[INFO] Checking SSH connection:"
+                ./auto/test-ssh-connection ${env.SSH_USER} ${env.DEPLOY_ENV} ${env.SSH_PORT}
+                echo "[INFO] Checking Disk space:"
+                ./auto/check-resource ${env.SSH_USER} ${env.DEPLOY_ENV} ${env.SSH_PORT}
+                """
+                echo "[INFO] Env is ready to go..."
+            }
+        }
+
+        stage("Deploy prod env via ansible"){
+            environment {
+                DEPLOY_ENV="prod"
+            }
+            steps{
+                echo "[INFO] Start deploying war to the destination server"
+                withCredentials([usernamePassword(credentialsId: "${env.NEXUS_CREDENTIAL_ID}", usernameVariable: 'Nexus_USERNAME', passwordVariable: 'Nexus_PASSWORD')]) {
+                    sh "auto/ansible-playbook ${env.PROJECT_NAME} ${env.DEPLOY_ENV} ${env.Nexus_USERNAME} ${env.Nexus_PASSWORD} ${env.NEXUS_URL}"
+                }
+                echo "[INFO] Deployment is complete in ${env.DEPLOY_ENV} :)"
+            }
+        }
+
+        stage("Health Check in prod env"){
+            environment {
+                DEPLOY_ENV="prod"
+            }
+            steps{
+                echo "[INFO] Health check for destination server"
+                sh "./auto/health-check ${env.DEPLOY_ENV} ${env.APP_PORT} ${env.PROJECT_NAME}"
+                echo "[INFO] Health check is complete, deployment is accomplished in ${env.DEPLOY_ENV} :)"
             }
         }
 
