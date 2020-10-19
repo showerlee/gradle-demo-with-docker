@@ -6,9 +6,11 @@ The repo contains Jenkinsfile, ansible playbook, Java application, gradle config
 
 ## Architecture
 
-![Gradle-demo-with-docker architecture](https://github.com/showerlee/gradle-demo-with-docker/blob/master/docs/Gradle-demo-with-docker.png)
+![Gradle-demo-with-docker architecture](./docs/Gradle-demo-with-docker.png)
 
 ## Procedure
+
+![Pipeline steps](./docs/pipeline.png)
 
 ```txt
 Checkout source code  ==> Functional test ==> Build and release image  ==> Initialize test env ==> Deploy test env via ansible ==> Health Check in test env ==> Initialize prod env ==> Deploy prod env via ansible ==> Health Check in prod env
@@ -44,7 +46,7 @@ Ansible ===> Deployment tool
 
 3. Create a jenkins pipeline item
 
-4. Setup github and AnsiColor jenkins plugin
+4. Setup github(webhook) and AnsiColor jenkins plugin
 
 5. Provision current repo in pipeline setting with proper credential
 
