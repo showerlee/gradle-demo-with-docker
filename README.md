@@ -11,7 +11,7 @@ The repo contains Jenkinsfile, ansible playbook, Java application, gradle config
 ## Procedure
 
 ```txt
-Checkout source code  ==> Build and release image  ==> Check prerequsite ==> Ansible deployment ==> Health check
+Checkout source code  ==> Functional test ==> Build and release image  ==> Initialize test env ==> Deploy test env via ansible ==> Health Check in test env ==> Initialize prod env ==> Deploy prod env via ansible ==> Health Check in prod env
 ```
 
 Remember to proactive the prerequisite before rollout the pipeline.
@@ -42,8 +42,10 @@ Ansible ===> Deployment tool
 
 2. Create an [ansible docker](https://github.com/showerlee/gradle-demo-with-docker/tree/master/ansible) in Jenkins node.
 
-2. Create a jenkins pipeline style job
+3. Create a jenkins pipeline item
 
-3. Provision the repo and all related in pipeline job
+4. Setup github and AnsiColor jenkins plugin
 
-4. Rock and roll
+5. Provision current repo in pipeline setting with proper credential
+
+6. Rock and roll

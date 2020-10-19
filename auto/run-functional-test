@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+source ./auto/set-env-vars
+
+PROJECT_NAME="gradle-demo-with-docker"
+HOST=${HOST:-"localhost:${APP_PORT}"}
+TEST_NUM=0
+FAILED_NUM=0
+SUCCESS_NUM=0
+EXIT_CODE=0
+
+./auto/start-local-dev ${PROJECT_NAME}
+
+source ./test/libs
+source ./test/local-check-libs
+source ./test/triage-test
+
+./auto/stop-local-dev ${PROJECT_NAME}
+
+show_result ${TEST_NUM} ${SUCCESS_NUM} ${FAILED_NUM}
+
+exit ${EXIT_CODE}

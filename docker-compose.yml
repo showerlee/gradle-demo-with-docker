@@ -8,7 +8,7 @@ services:
       - .:/app:rw
       - gradle-cache:/home/gradle/.gradle
     ports: 
-      - ${APP_PORT}:${APP_PORT}
+      - ${APP_PORT}:8080
 
   ansible:
     image: ${ANSIBLE_DOCKER_IMAGE}:${ANSIBLE_VERSION}

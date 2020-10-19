@@ -1,0 +1,17 @@
+#!/bin/bash
+
+info() {
+  echo -e "  \033[36m>>> $1\033[39m"
+}
+
+error() {
+  echo -e "  \033[91mError: $1\033[39m"
+}
+
+context() {
+  echo "Case: $1"
+}
+
+show_result(){
+  echo -e "\n\033[93mFinished! ${1} tests, ${2} successes, ${3} failures.\033[39m"
+}

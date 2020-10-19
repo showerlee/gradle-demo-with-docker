@@ -1,0 +1,10 @@
+#! /bin/bash -e
+
+cd $(dirname $0)/..
+
+PROJECT_NAME=${1:-"gradle-demo-with-docker"}
+export VERSION="dev"
+
+docker-compose -p ${PROJECT_NAME} build --force-rm dev
+
+docker-compose -p ${PROJECT_NAME} up -d dev

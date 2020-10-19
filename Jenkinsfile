@@ -3,7 +3,10 @@
 pipeline {
     agent{node {label 'master'}}
 
-    options { timestamps () }
+    options {
+        timestamps ()
+        ansiColor('xterm')
+    }
     
     environment {
         PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
@@ -17,6 +20,15 @@ pipeline {
     }
     
     stages {
+        stage("Functional test"){
+            steps{
+                sh """
+                echo "[INFO] Run functional test"
+                ./auto/run-functional-test
+                """
+            }
+        }
+
         stage("Build and Release Image"){
             steps{
                 withCredentials([usernamePassword(credentialsId: "${env.NEXUS_CREDENTIAL_ID}", usernameVariable: 'Nexus_USERNAME', passwordVariable: 'Nexus_PASSWORD')]) {

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+context "Retrieve GET request '/gradle-demo-with-docker/'"
+test_backend '/gradle-demo-with-docker/' 'gradle-demo-with-docker'
